@@ -1,5 +1,8 @@
+import db_worker as dw
+
+
 class Game:
-    cards = []
+    cards = dw.results
 
     def __init__(self):
         self.menu_items = {
@@ -34,18 +37,20 @@ class Game:
             print(f'{key}. {value[0]}')
 
     def add_card(self):
-        Game.cards.append((self.input_true('Question'), self.input_true('Answer')))
+        dw.add_cards(self.input_true('Question'), self.input_true('Answer'))
         print()
 
     @classmethod
     def practice(cls):
-        phrase = 'Please press "y" to see the answer or press "n" to skip:'
-        if cls.cards:
-            for q, a in cls.cards:
-                command = input(f'Question: {q}\n{phrase}\n')
+        phrase = 'Please press "y" to see the answer or press "n" to skip'
+
+        if cls.cards():
+            for card in cls.cards():
+                print(f'Question: {card.question}')
+                command = cls.input_true(phrase, ('y', 'n'))
                 print()
                 if command == 'y':
-                    print(f'Answer: {a}')
+                    print(f'Answer: {card.answer}')
                 print()
         else:
             print('There is no flashcard to practice!\n')
@@ -55,10 +60,10 @@ class Game:
         raise StopIteration
 
     @staticmethod
-    def input_true(text):
+    def input_true(text, cases=None):
         while True:
             result = input(f'{text}:\n')
-            if not result:
+            if not result or (cases is not None and result not in cases):
                 continue
             return result
 
