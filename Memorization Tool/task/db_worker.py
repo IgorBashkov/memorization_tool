@@ -26,3 +26,18 @@ def results():
 def add_cards(question, answer):
     session.add(FlashCards(question=question, answer=answer))
     session.commit()
+
+
+def delete_card(card_id):
+    entry = session.query(FlashCards).get(card_id)
+    session.delete(entry)
+    session.commit()
+
+
+def edit_card(card_id, question, answer):
+    if question and answer:
+        entry = session.query(FlashCards).get(card_id)
+        entry.answer = answer
+        entry.question = question
+        session.commit()
+
