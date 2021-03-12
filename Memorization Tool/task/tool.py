@@ -26,7 +26,7 @@ class Game:
         self.menu(self.main_menu, key_format=lambda s: f'{s}. ')
 
     def menu(self, menu_items, key_format=None, **kwargs):
-        def not_an_option(**kws):
+        def not_an_option():
             print(f'{command} is not an option\n')
         try:
             while True:
@@ -48,7 +48,7 @@ class Game:
         dw.add_cards(self.input_true('Question'), self.input_true('Answer'))
         print()
 
-    def practice(self, **kwargs):  # number 2 on main menu
+    def practice(self):  # number 2 on main menu
         if self.cards():
             for card in self.cards():
                 print(f'Question: {card.question}')
@@ -70,13 +70,6 @@ class Game:
             if not result:
                 continue
             return result
-
-    @classmethod
-    def exit_decorator(cls, func):
-        def wrapper(**kwargs):
-            func(**kwargs)
-            cls.exit()
-        return wrapper
 
     def update_card(self, **kwargs):  # call menu for update cart and close
         self.menu(self.update_menu, key_format=lambda s: f'press "{s}" ', **kwargs)
